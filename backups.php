@@ -83,8 +83,8 @@ include ("plantillaArriba2.php");
 				//Creando BAT
 				//var_dump("1");
 				$reglas=$c->CreaPoliticasLocales();
-				var_dump($reglas);	
-				$r=$c->AplicaPoliticas();	
+				//var_dump($reglas);	
+				//$r=$c->AplicaPoliticas();	
 				//var_dump($reglas);
 
 				?>

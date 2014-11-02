@@ -765,7 +765,59 @@ function CreaPoliticasLocales(){
 			*/
 			while ($row = oci_fetch_array($stid, OCI_ASSOC+OCI_RETURN_NULLS)) {
 				$res[] = $row;
-				$name= "$row[FECHA]"."$row[HORA]"."$row[MINUTO]";
+				$name= "$row[FECHA]"."$row[HORA].$row[MINUTO]";
+				//var_dump($name);
+
+				//BAT
+				$file_name="C:\politicas\\".$name;
+
+				$myfile = fopen($file_name."rman.bat", "w") or die("Unable to open file!");
+				$txt = "rman target/ @$file_name"."rman.sql  
+				call $file_name"."sql.bat";
+				fwrite($myfile, $txt);
+				fclose($myfile);
+ 
+				//SQL
+				$myfile2 = fopen($file_name."rman.sql", "w") or die("Unable to open file!");
+				//$txt = "backup $row[TIPO]";
+
+
+//Sentencia de Backup
+
+				$txt = "exit;";
+				fwrite($myfile2, $txt);
+				fclose($myfile2);
+
+				$myfile3 = fopen($file_name."sql.bat", "w") or die("Unable to open file!");
+				$txt = "sqlplus sanjose/sanjose @$file_name"."sql.sql";
+				fwrite($myfile3, $txt);
+				fclose($myfile3);
+
+				//SQL
+				$myfile4 = fopen($file_name."sql.sql", "w") or die("Unable to open file!");
+				//$txt = "backup $row[TIPO]";
+				$txt = "execute procedimiento de logs();";
+				fwrite($myfile4, $txt);
+				fclose($myfile4);
+			}
+		}
+		oci_close($con);
+		return $res;
+	}
+	/*
+
+
+function AplicaPoliticas(){
+		$con = $this->con();	
+		$res=false;
+		$query='select  from politicas_locales';
+		$stid = oci_parse($con, $query);
+		oci_execute($stid);
+		if($query!=null){
+
+			while ($row = oci_fetch_array($stid, OCI_ASSOC+OCI_RETURN_NULLS)) {
+				$res[] = $row;
+				$name= "$row[FECHA]"."$row[HORA]";
 				//var_dump($name);
 
 				//BAT
@@ -804,35 +856,8 @@ function CreaPoliticasLocales(){
 		oci_close($con);
 		return $res;
 	}
+	*/
 
-
-function AplicaPoliticas(){
-		$con = $this->con();	
-		$res=false;
-		$query='select fecha,hora,minuto from politicas_locales';
-		$stid = oci_parse($con, $query);
-		oci_execute($stid);
-		if($query!=null){
-			while ($row = oci_fetch_array($stid, OCI_ASSOC+OCI_RETURN_NULLS)) {
-				$res[] = $row;
-				$name= "$row[FECHA]$row[HORA]$row[MINUTO]";
-				$today = date("Ymd"); 
-				var_dump($today);
-				$horas =  date("H:i");
-				$fecha= "$row[FECHA]";
-				$h="$row[HORA]:$row[MINUTO]";
-				var_dump($h);
-				if($row[FECHA]==$today&&$horas==$h){
-					exec("$ro[$ruta]");
-				/*if($row[FECHA]==$today&&$horas==$h){
-					exec("$row[RUTA]");
-				}*/
-
-			}
-		}
-		oci_close($con);
-		return $res;
-	}
 
 
 
