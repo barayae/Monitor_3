@@ -1,0 +1,1 @@
+sqlplus sanjose/sanjose @C:\backup\20140206522sql.sql
