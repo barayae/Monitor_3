@@ -749,7 +749,26 @@ function lis_roles_para_usuario(){
 	}
 
 
+//Insertar politicas a la tabla de politicas
+
+//Modificar politicas  a la tabla
+
+
+// Eliminar Politicas
+
+//Elimina BATS y SQL
+
+function EliminaDatos(){
+	array_map('unlink', glob("C:/politicas/*.bat"));
+	array_map('unlink', glob("C:/politicas/*.sql")); 
+	array_map('unlink', glob("C:/politicas/*.txt")); 
+}
+
+
+
+///Creacion de todos los archivos BAT y SQL, este es ejecutado cada vez que se modifique, se crea o se borra una politica
 function CreaPoliticasLocales(){
+		$this->EliminaDatos();
 		$con = $this->con();	
 		$res=false;
 		$query='select * from politicas_locales';
@@ -805,6 +824,10 @@ function CreaPoliticasLocales(){
 		return $res;
 	}
 	/*
+
+
+
+/// Aplicacion de BackUps,  este ejecuta los bats a u hora correspondiente
 
 
 function AplicaPoliticas(){
